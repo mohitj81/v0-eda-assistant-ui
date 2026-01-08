@@ -24,3 +24,6 @@ app.include_router(compare.router)
 @app.get("/health")
 def health():
     return {"status": "ok"}
+@app.get("/")
+def root():
+    return {"message": "EDA Assistant Backend Running"}
