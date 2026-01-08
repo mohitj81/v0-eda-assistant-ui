@@ -15,32 +15,32 @@ FastAPI-based backend for Exploratory Data Analysis with real pandas processing,
 
 ### 1. Install Dependencies
 
-```bash
+\`\`\`bash
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 pip install -r requirements.txt
-```
+\`\`\`
 
 ### 2. Set Environment Variables
 
 Create `.env` file:
-```
+\`\`\`
 ANTHROPIC_API_KEY=your-api-key-here
-```
+\`\`\`
 
 Get your free API key at: https://console.anthropic.com/
 
 ### 3. Run Server
 
-```bash
+\`\`\`bash
 python main.py
-```
+\`\`\`
 
 Server runs on `http://localhost:8000`
 
 ### 4. Test with cURL
 
-```bash
+\`\`\`bash
 # Upload a CSV file
 curl -X POST "http://localhost:8000/upload" \
   -F "file=@your-file.csv"
@@ -59,7 +59,7 @@ curl "http://localhost:8000/script?session_id=SESSION_ID"
 
 # Get comparison
 curl "http://localhost:8000/compare?session_id=SESSION_ID"
-```
+\`\`\`
 
 ## API Endpoints
 
@@ -69,7 +69,7 @@ Upload CSV file and get metadata
 **Request:** multipart/form-data with `file` field
 
 **Response:**
-```json
+\`\`\`json
 {
   "success": true,
   "session_id": "uuid",
@@ -79,13 +79,13 @@ Upload CSV file and get metadata
   "column_names": ["col1", "col2", ...],
   "preview": [...]
 }
-```
+\`\`\`
 
 ### GET /profile?session_id=uuid
 Get comprehensive data profiling
 
 **Response:**
-```json
+\`\`\`json
 {
   "session_id": "uuid",
   "rows": 1000,
@@ -110,13 +110,13 @@ Get comprehensive data profiling
   ],
   "generated_at": "2024-01-01T12:00:00"
 }
-```
+\`\`\`
 
 ### GET /risk?session_id=uuid
 Get data quality risk assessment
 
 **Response:**
-```json
+\`\`\`json
 {
   "session_id": "uuid",
   "risk_score": 0.35,
@@ -136,37 +136,37 @@ Get data quality risk assessment
   ],
   "generated_at": "2024-01-01T12:00:00"
 }
-```
+\`\`\`
 
 ### GET /explain?session_id=uuid
 Get AI-generated explanations using Claude
 
 **Response:**
-```json
+\`\`\`json
 {
   "session_id": "uuid",
   "explanation": "Based on your dataset analysis...",
   "generated_at": "2024-01-01T12:00:00"
 }
-```
+\`\`\`
 
 ### GET /script?session_id=uuid
 Get auto-generated Python cleaning script
 
 **Response:**
-```json
+\`\`\`json
 {
   "session_id": "uuid",
   "script": "import pandas as pd\nimport numpy as np\n\ndf = pd.read_csv('dataset.csv')\n...",
   "generated_at": "2024-01-01T12:00:00"
 }
-```
+\`\`\`
 
 ### GET /compare?session_id=uuid
 Get before/after comparison metrics
 
 **Response:**
-```json
+\`\`\`json
 {
   "session_id": "uuid",
   "before": {
@@ -194,29 +194,29 @@ Get before/after comparison metrics
   },
   "generated_at": "2024-01-01T12:00:00"
 }
-```
+\`\`\`
 
 ### GET /health
 Health check endpoint
 
 **Response:**
-```json
+\`\`\`json
 {
   "status": "ok",
   "version": "1.0.0"
 }
-```
+\`\`\`
 
 ## Development
 
 ### Run with auto-reload:
-```bash
+\`\`\`bash
 pip install watchfiles
 uvicorn main:app --reload
-```
+\`\`\`
 
 ### Run tests:
-```bash
+\`\`\`bash
 # Create test CSV
 python -c "
 import pandas as pd
@@ -229,25 +229,25 @@ pd.DataFrame({
 
 # Test endpoints
 curl -X POST "http://localhost:8000/upload" -F "file=@test.csv"
-```
+\`\`\`
 
 ## Production Deployment
 
 ### Using Gunicorn:
-```bash
+\`\`\`bash
 gunicorn main:app --workers 4 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
-```
+\`\`\`
 
 ### Using Docker:
-```bash
+\`\`\`bash
 docker build -t eda-assistant .
 docker run -p 8000:8000 -e ANTHROPIC_API_KEY=your-key eda-assistant
-```
+\`\`\`
 
 ### Using Docker Compose:
-```bash
+\`\`\`bash
 docker-compose up
-```
+\`\`\`
 
 See DEPLOYMENT.md for detailed production setup.
 
@@ -267,7 +267,7 @@ All endpoints return appropriate HTTP status codes:
 
 CORS is enabled for all origins in development. For production, restrict to your frontend domain:
 
-```python
+\`\`\`python
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://your-frontend-domain.com"],
@@ -275,7 +275,7 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
-```
+\`\`\`
 
 ## Support
 

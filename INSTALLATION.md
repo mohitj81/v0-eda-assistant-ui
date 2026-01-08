@@ -13,15 +13,15 @@ Complete step-by-step guide to set up the EDA Assistant locally.
 
 ### Step 1: Clone and Navigate
 
-```bash
+\`\`\`bash
 # Clone the repository
 git clone <your-repo-url>
 cd eda-assistant
-```
+\`\`\`
 
 ### Step 2: Frontend Setup
 
-```bash
+\`\`\`bash
 # Install Node dependencies
 npm install
 
@@ -31,11 +31,11 @@ cp .env.example .env.local
 # Edit .env.local with your settings:
 # - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 # - NEXT_PUBLIC_LLM_API_KEY=your_anthropic_key (optional)
-```
+\`\`\`
 
 ### Step 3: Backend Setup
 
-```bash
+\`\`\`bash
 # Navigate to backend folder
 cd backend
 
@@ -57,24 +57,24 @@ cp .env .env.local  # or create new .env file
 
 # Edit .env with:
 # ANTHROPIC_API_KEY=your_anthropic_key
-```
+\`\`\`
 
 ### Step 4: Run the Application
 
 **Terminal 1 - Start Backend:**
 
-```bash
+\`\`\`bash
 cd backend
 python main.py
-```
+\`\`\`
 
 Backend will start at `http://localhost:8000`
 
 **Terminal 2 - Start Frontend:**
 
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 Frontend will start at `http://localhost:3000`
 
@@ -97,71 +97,71 @@ Open your browser and go to: **http://localhost:3000**
 
 The backend accepts these environment variables:
 
-```
+\`\`\`
 ANTHROPIC_API_KEY          # Required for AI explanations
 FRONTEND_URL               # CORS allowed origin (default: http://localhost:3000)
-```
+\`\`\`
 
 ### Frontend Configuration
 
 The frontend uses these environment variables:
 
-```
+\`\`\`
 NEXT_PUBLIC_BACKEND_URL    # Backend API URL (default: http://localhost:8000)
 NEXT_PUBLIC_LLM_API_KEY    # Anthropic API key (optional, used by frontend)
 NEXT_PUBLIC_DEFAULT_THEME  # Theme: 'light' or 'dark' (default: dark)
-```
+\`\`\`
 
 ## Verify Installation
 
 ### Test Backend
 
-```bash
+\`\`\`bash
 # In backend directory
 curl http://localhost:8000/health
 
 # Expected response:
 # {"status":"ok","version":"1.0.0"}
-```
+\`\`\`
 
 ### Test Full Setup
 
-```bash
+\`\`\`bash
 # Generate test data
 cd backend
 python test_data.py
 
 # Run endpoint tests
 python test_endpoints.py
-```
+\`\`\`
 
 ## Troubleshooting
 
 ### "Module not found" error
 
-```bash
+\`\`\`bash
 # Make sure virtual environment is activated
 source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate     # Windows
 
 # Reinstall dependencies
 pip install -r requirements.txt
-```
+\`\`\`
 
 ### "Port 8000 already in use"
 
-```bash
+\`\`\`bash
 # Kill process using port 8000
 lsof -ti:8000 | xargs kill -9    # macOS/Linux
 netstat -ano | findstr :8000     # Windows (then taskkill)
-```
+\`\`\`
 
 ### "Port 3000 already in use"
 
-```bash
+\`\`\`bash
 # Kill process using port 3000
 lsof -ti:3000 | xargs kill -9    # macOS/Linux
-```
+\`\`\`
 
 ### "Backend connection refused"
 

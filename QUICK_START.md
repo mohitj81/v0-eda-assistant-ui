@@ -9,7 +9,7 @@ Get the EDA Assistant running in 5 minutes!
 
 ## One-Command Setup (Mac/Linux)
 
-```bash
+\`\`\`bash
 # Clone repo
 git clone your-repo-url
 cd your-repo
@@ -37,7 +37,7 @@ npm run dev
 # Terminal 2: Start backend
 cd backend
 python main.py
-```
+\`\`\`
 
 ## Access
 

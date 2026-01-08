@@ -26,7 +26,7 @@ A modern, production-grade web application for automated exploratory data analys
 
 ## Project Structure
 
-```
+\`\`\`
 app/
 ├── layout.tsx              # Root layout with providers
 ├── globals.css             # Global styles and theme tokens
@@ -64,7 +64,7 @@ lib/
 └── utils.ts                # Utility functions
 
 public/                      # Static assets
-```
+\`\`\`
 
 ## Getting Started
 
@@ -76,31 +76,31 @@ public/                      # Static assets
 ### Installation
 
 1. Clone the repository or download the project:
-```bash
+\`\`\`bash
 git clone <repository-url>
 cd eda-assistant
-```
+\`\`\`
 
 2. Install dependencies:
-```bash
+\`\`\`bash
 npm install
-```
+\`\`\`
 
 3. Set up environment variables by creating a `.env.local` file:
-```bash
+\`\`\`bash
 cp .env.example .env.local
-```
+\`\`\`
 
 4. Configure the backend URL in `.env.local`:
-```env
+\`\`\`env
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-```
+\`\`\`
 
 ### Running the Development Server
 
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
@@ -109,36 +109,36 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 The application is designed to work with a FastAPI backend. The backend should implement the following endpoints:
 
 ### Upload Dataset
-```
+\`\`\`
 POST /upload
 Content-Type: multipart/form-data
 Body: { file: CSV file }
 Response: { dataset_id: string, preview: string[] }
-```
+\`\`\`
 
 ### Get Profiling Results
-```
+\`\`\`
 GET /profile/{dataset_id}
 Response: { summary: {...}, columns: [...] }
-```
+\`\`\`
 
 ### Get Risk Assessment
-```
+\`\`\`
 GET /risk/{dataset_id}
 Response: { score: "Low|Medium|High", numeric_score: number, critical_issues: [...], warnings: [...] }
-```
+\`\`\`
 
 ### Get AI Explanation
-```
+\`\`\`
 GET /explain/{dataset_id}
 Response: { explanation: string }
-```
+\`\`\`
 
 ### Get Cleaning Script
-```
+\`\`\`
 GET /script/{dataset_id}
 Response: { script: string }
-```
+\`\`\`
 
 ## Customization
 
@@ -160,7 +160,7 @@ Edit `app/globals.css` to customize the color scheme:
 
 Add new API calls to `lib/api-client.ts`:
 
-```typescript
+\`\`\`typescript
 async newEndpoint(params: any): Promise<any> {
   const response = await fetch(`${API_BASE_URL}/endpoint`, {
     method: "POST",
@@ -170,13 +170,13 @@ async newEndpoint(params: any): Promise<any> {
   if (!response.ok) throw new Error("Failed to fetch")
   return response.json()
 }
-```
+\`\`\`
 
 ## State Management
 
 The application uses React Context for state management. Access global state with the `useEDA()` hook:
 
-```typescript
+\`\`\`typescript
 import { useEDA } from "@/lib/context"
 
 export function MyComponent() {
@@ -186,14 +186,14 @@ export function MyComponent() {
     // component code
   )
 }
-```
+\`\`\`
 
 ## Building for Production
 
-```bash
+\`\`\`bash
 npm run build
 npm start
-```
+\`\`\`
 
 The application will be optimized and ready for production deployment.
 
@@ -229,9 +229,9 @@ This is a standard Next.js application and can be deployed to:
 ### Debugging
 
 Use `console.log()` statements with descriptive prefixes:
-```typescript
+\`\`\`typescript
 console.log("[v0] Dataset uploaded:", dataset)
-```
+\`\`\`
 
 ### Styling
 

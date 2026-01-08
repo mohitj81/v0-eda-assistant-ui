@@ -10,26 +10,26 @@ Before starting, ensure you have:
 - **Anthropic API key** (free tier available at https://console.anthropic.com/)
 
 Verify installations:
-```bash
+\`\`\`bash
 node --version
 npm --version
 python --version
-```
+\`\`\`
 
 ## Step 1: Clone and Install
 
-```bash
+\`\`\`bash
 # Clone the repository
 git clone <your-repo-url>
 cd eda-assistant
 
 # Install frontend dependencies
 npm install
-```
+\`\`\`
 
 ## Step 2: Set Up Backend
 
-```bash
+\`\`\`bash
 cd backend
 
 # Create virtual environment
@@ -46,24 +46,24 @@ pip install -r requirements.txt
 
 # Go back to root
 cd ..
-```
+\`\`\`
 
 ## Step 3: Configure Environment Variables
 
 ### Frontend Configuration
 
 Create `.env.local` in the root directory:
-```bash
+\`\`\`bash
 echo "NEXT_PUBLIC_BACKEND_URL=http://localhost:8000" > .env.local
-```
+\`\`\`
 
 ### Backend Configuration
 
 Create `backend/.env`:
-```bash
+\`\`\`bash
 echo "ANTHROPIC_API_KEY=sk-ant-YOUR_KEY_HERE" > backend/.env
 echo "FRONTEND_URL=http://localhost:3000" >> backend/.env
-```
+\`\`\`
 
 Get your Anthropic API key at: https://console.anthropic.com/
 
@@ -72,17 +72,17 @@ Get your Anthropic API key at: https://console.anthropic.com/
 Open two terminal windows:
 
 ### Terminal 1 - Frontend:
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 Frontend runs at: **http://localhost:3000**
 
 ### Terminal 2 - Backend:
-```bash
+\`\`\`bash
 cd backend
 source venv/bin/activate  # Windows: venv\Scripts\activate
 python main.py
-```
+\`\`\`
 Backend runs at: **http://localhost:8000**
 
 ## Step 5: Test Everything
@@ -99,7 +99,7 @@ Backend runs at: **http://localhost:8000**
 ## Testing with Sample Data
 
 Create a test CSV:
-```bash
+\`\`\`bash
 python -c "
 import pandas as pd
 df = pd.DataFrame({
@@ -110,53 +110,53 @@ df = pd.DataFrame({
 })
 df.to_csv('sample.csv', index=False)
 "
-```
+\`\`\`
 
 Then upload `sample.csv` in the app.
 
 ## Troubleshooting
 
 ### Backend Connection Error
-```
+\`\`\`
 "Backend connection refused"
-```
+\`\`\`
 **Fix:**
 1. Ensure backend is running: `python main.py` in terminal 2
 2. Check `.env.local` has correct `NEXT_PUBLIC_BACKEND_URL`
 3. Check backend `.env` has valid `ANTHROPIC_API_KEY`
 
 ### Invalid API Key
-```
+\`\`\`
 "Invalid API key"
-```
+\`\`\`
 **Fix:**
 1. Get key from https://console.anthropic.com/
 2. Update `ANTHROPIC_API_KEY` in `backend/.env`
 3. Restart backend: `python main.py`
 
 ### Port Already in Use
-```
+\`\`\`
 "Address already in use"
-```
+\`\`\`
 **Fix:**
-```bash
+\`\`\`bash
 # For port 3000 (Next.js)
 npx kill-port 3000
 
 # For port 8000 (FastAPI)
 python -m pip install lsof
 lsof -ti:8000 | xargs kill -9
-```
+\`\`\`
 
 ### Module Not Found Error
-```
+\`\`\`
 "ModuleNotFoundError: No module named 'fastapi'"
-```
+\`\`\`
 **Fix:**
-```bash
+\`\`\`bash
 cd backend
 pip install -r requirements.txt
-```
+\`\`\`
 
 ## Next Steps
 
@@ -167,7 +167,7 @@ pip install -r requirements.txt
 
 ## Project Structure
 
-```
+\`\`\`
 eda-assistant/
 ├── app/                    # Next.js pages
 │   ├── page.tsx           # Landing page
@@ -193,7 +193,7 @@ eda-assistant/
 │   ├── main.py          # Main application
 │   └── requirements.txt  # Python dependencies
 └── package.json         # npm dependencies
-```
+\`\`\`
 
 ## Key Files to Customize
 

@@ -3,20 +3,20 @@
 ## Quick Start (5 minutes)
 
 ### 1. Install Dependencies
-```bash
+\`\`\`bash
 npm install
-```
+\`\`\`
 
 ### 2. Configure Backend
 Create `.env.local`:
-```env
+\`\`\`env
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
-```
+\`\`\`
 
 ### 3. Start Development Server
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 ### 4. Open in Browser
 Navigate to `http://localhost:3000`
@@ -26,12 +26,12 @@ Navigate to `http://localhost:3000`
 ### Step 1: Environment Setup
 
 Copy the example environment file:
-```bash
+\`\`\`bash
 cp .env.example .env.local
-```
+\`\`\`
 
 Edit `.env.local` with your configuration:
-```env
+\`\`\`env
 # Required: Backend API URL
 NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
 
@@ -40,13 +40,13 @@ NEXT_PUBLIC_LLM_API_KEY=your-api-key-here
 
 # Optional: Default theme
 NEXT_PUBLIC_DEFAULT_THEME=dark
-```
+\`\`\`
 
 ### Step 2: Install Dependencies
 
-```bash
+\`\`\`bash
 npm install
-```
+\`\`\`
 
 This installs:
 - Next.js 16 with App Router
@@ -59,16 +59,16 @@ This installs:
 ### Step 3: Verify Installation
 
 Run the development server:
-```bash
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
 Expected output:
-```
+\`\`\`
 ▲ Next.js 16.0.10
 - Local:        http://localhost:3000
 - Environments: .env.local
-```
+\`\`\`
 
 ### Step 4: Check Application
 
@@ -85,7 +85,7 @@ Open your browser to `http://localhost:3000` and verify:
 Your FastAPI backend should implement:
 
 #### 1. Dataset Upload
-```python
+\`\`\`python
 @app.post("/upload")
 async def upload_dataset(file: UploadFile):
     # Process CSV and return preview
@@ -93,10 +93,10 @@ async def upload_dataset(file: UploadFile):
         "dataset_id": "unique-id",
         "preview": ["header", "row1", "row2"]
     }
-```
+\`\`\`
 
 #### 2. Data Profiling
-```python
+\`\`\`python
 @app.get("/profile/{dataset_id}")
 async def get_profiling(dataset_id: str):
     return {
@@ -115,10 +115,10 @@ async def get_profiling(dataset_id: str):
             }
         ]
     }
-```
+\`\`\`
 
 #### 3. Risk Assessment
-```python
+\`\`\`python
 @app.get("/risk/{dataset_id}")
 async def get_risk(dataset_id: str):
     return {
@@ -127,25 +127,25 @@ async def get_risk(dataset_id: str):
         "critical_issues": ["Issue 1", "Issue 2"],
         "warnings": ["Warning 1"]
     }
-```
+\`\`\`
 
 #### 4. AI Explanation
-```python
+\`\`\`python
 @app.get("/explain/{dataset_id}")
 async def get_explanation(dataset_id: str):
     return {
         "explanation": "Your dataset has..."
     }
-```
+\`\`\`
 
 #### 5. Cleaning Script
-```python
+\`\`\`python
 @app.get("/script/{dataset_id}")
 async def get_script(dataset_id: str):
     return {
         "script": "import pandas as pd\n..."
     }
-```
+\`\`\`
 
 ### Testing API Integration
 
@@ -161,12 +161,12 @@ Use the Upload page to test:
 
 Edit `app/globals.css` - search for `--primary`:
 
-```css
+\`\`\`css
 :root {
   --primary: oklch(0.456 0.194 262.1); /* Change this */
   /* Other tokens... */
 }
-```
+\`\`\`
 
 Color format: `oklch(lightness saturation hue)`
 
@@ -174,24 +174,24 @@ Color format: `oklch(lightness saturation hue)`
 
 Edit `components/layouts/sidebar.tsx`:
 
-```typescript
+\`\`\`typescript
 const navItems = [
   // ... existing items
   { href: "/your-page", label: "Your Page", icon: YourIcon },
 ]
-```
+\`\`\`
 
 ### Changing Default Theme
 
 Edit `.env.local`:
-```env
+\`\`\`env
 NEXT_PUBLIC_DEFAULT_THEME=light
-```
+\`\`\`
 
 Or edit `app/layout.tsx`:
-```tsx
+\`\`\`tsx
 <ThemeProvider defaultTheme="light" ...>
-```
+\`\`\`
 
 ## Deployment Checklist
 
@@ -208,20 +208,20 @@ Before deploying to production:
 
 ### Build for Production
 
-```bash
+\`\`\`bash
 npm run build
 npm start
-```
+\`\`\`
 
 ### Deploy to Vercel (Recommended)
 
-```bash
+\`\`\`bash
 # Install Vercel CLI
 npm i -g vercel
 
 # Deploy
 vercel
-```
+\`\`\`
 
 Follow the prompts to:
 1. Link to your GitHub repository

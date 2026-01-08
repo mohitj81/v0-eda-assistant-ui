@@ -13,51 +13,51 @@ This guide covers deploying both the Next.js frontend and FastAPI backend.
 ### Frontend
 
 1. Install dependencies:
-   ```bash
+   \`\`\`bash
    npm install
-   ```
+   \`\`\`
 
 2. Create `.env.local`:
-   ```
+   \`\`\`
    NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
    NEXT_PUBLIC_LLM_API_KEY=your_anthropic_api_key
-   ```
+   \`\`\`
 
 3. Run dev server:
-   ```bash
+   \`\`\`bash
    npm run dev
-   ```
+   \`\`\`
 
    Frontend runs at `http://localhost:3000`
 
 ### Backend
 
 1. Navigate to backend directory:
-   ```bash
+   \`\`\`bash
    cd backend
-   ```
+   \`\`\`
 
 2. Create virtual environment:
-   ```bash
+   \`\`\`bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+   \`\`\`
 
 3. Install dependencies:
-   ```bash
+   \`\`\`bash
    pip install -r requirements.txt
-   ```
+   \`\`\`
 
 4. Create `.env`:
-   ```
+   \`\`\`
    ANTHROPIC_API_KEY=your_anthropic_api_key
    FRONTEND_URL=http://localhost:3000
-   ```
+   \`\`\`
 
 5. Run server:
-   ```bash
+   \`\`\`bash
    python main.py
-   ```
+   \`\`\`
 
    Backend runs at `http://localhost:8000`
 
@@ -99,22 +99,22 @@ This guide covers deploying both the Next.js frontend and FastAPI backend.
 1. Launch an EC2 instance (Ubuntu 22.04)
 2. SSH into instance
 3. Install dependencies:
-   ```bash
+   \`\`\`bash
    sudo apt update
    sudo apt install python3-pip python3-venv nginx
-   ```
+   \`\`\`
 
 4. Clone your repository and set up:
-   ```bash
+   \`\`\`bash
    git clone your-repo
    cd your-repo/backend
    python3 -m venv venv
    source venv/bin/activate
    pip install -r requirements.txt
-   ```
+   \`\`\`
 
 5. Set up systemd service (`/etc/systemd/system/eda-backend.service`):
-   ```ini
+   \`\`\`ini
    [Unit]
    Description=EDA Assistant Backend
    After=network.target
@@ -127,10 +127,10 @@ This guide covers deploying both the Next.js frontend and FastAPI backend.
 
    [Install]
    WantedBy=multi-user.target
-   ```
+   \`\`\`
 
 6. Set up Nginx reverse proxy (`/etc/nginx/sites-available/eda`):
-   ```nginx
+   \`\`\`nginx
    server {
        listen 80;
        server_name your-domain.com;
@@ -144,32 +144,32 @@ This guide covers deploying both the Next.js frontend and FastAPI backend.
            proxy_set_header X-Real-IP $remote_addr;
        }
    }
-   ```
+   \`\`\`
 
 7. Enable and start service:
-   ```bash
+   \`\`\`bash
    sudo systemctl enable eda-backend
    sudo systemctl start eda-backend
-   ```
+   \`\`\`
 
 #### Option 4: Docker
 
 1. Create `backend/Dockerfile`:
-   ```dockerfile
+   \`\`\`dockerfile
    FROM python:3.11-slim
    WORKDIR /app
    COPY requirements.txt .
    RUN pip install -r requirements.txt
    COPY main.py .
    CMD ["gunicorn", "main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000"]
-   ```
+   \`\`\`
 
 2. Build and push:
-   ```bash
+   \`\`\`bash
    docker build -t eda-backend .
    docker tag eda-backend your-registry/eda-backend
    docker push your-registry/eda-backend
-   ```
+   \`\`\`
 
 3. Deploy to any container service (Google Cloud Run, AWS ECS, etc.)
 
@@ -187,13 +187,13 @@ This guide covers deploying both the Next.js frontend and FastAPI backend.
 
 Test your deployment:
 
-```bash
+\`\`\`bash
 # Frontend
 curl https://your-frontend-url.com
 
 # Backend
 curl https://your-backend-url.com/health
-```
+\`\`\`
 
 ## Scaling Considerations
 
