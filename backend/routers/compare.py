@@ -1,22 +1,23 @@
-from fastapi import APIRouter, Query, HTTPException
-from typing import Dict, Any
+from fastapi import APIRouter, HTTPException
+from services.compare_service import compare_before_after
+import os
 
-router = APIRouter(prefix="/api", tags=["compare"])
+router = APIRouter(prefix="/compare", tags=["Before & After"])
 
-compare_service = None
-session_data = None
+@router.get("/{dataset_id}")
+async def compare(dataset_id: str):
+    raw_path = f"backend/storage/uploaded/{dataset_id}.csv"
+    cleaned_path = f"backend/storage/cleaned/{dataset_id}_cleaned.csv"
 
-@router.get("/compare")
-async def get_comparison(session_id: str = Query(...)) -> Dict[str, Any]:
-    """Get before/after comparison of data cleaning"""
+    if not os.path.exists(raw_path):
+        raise HTTPException(status_code=404, detail="Original dataset not found")
+
+    if not os.path.exists(cleaned_path):
+        raise HTTPException(status_code=404, detail="Cleaned dataset not found. Run script first.")
+
     try:
-        if session_id not in session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        df_original = session_data[session_id]["dataframe"]
-        comparison = compare_service.compare_before_after(df_original, session_id)
-        session_data[session_id]["comparison"] = comparison
-        
-        return comparison
+        result = compare_before_after(raw_path, cleaned_path)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Comparison failed: {e}")
+
+    return result

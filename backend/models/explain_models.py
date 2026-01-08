@@ -1,6 +1,4 @@
 from pydantic import BaseModel
 
-class ExplanationResponse(BaseModel):
-    session_id: str
+class ExplainModel(BaseModel):
     explanation: str
-    generated_at: str

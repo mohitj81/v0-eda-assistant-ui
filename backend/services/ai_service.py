@@ -1,38 +1,50 @@
-import json
-from typing import Dict, Any
-import anthropic
+import os
+from dotenv import load_dotenv
+import google.genai as genai
 
-class AIService:
-    def __init__(self, api_key: str = None):
-        self.client = anthropic.Anthropic(api_key=api_key)
-    
-    def generate_explanation(self, profile: Dict[str, Any], risk: Dict[str, Any]) -> str:
-        """Generate AI-powered explanation for data issues"""
-        prompt = f"""You are a data quality expert. Analyze this dataset profile and risk assessment:
+# Load .env variables
+load_dotenv()
 
-Dataset Overview:
-- Rows: {profile['rows']}
-- Columns: {profile['columns']}
-- Duplicates: {profile['duplicates']} ({profile['duplicate_percentage']:.1f}%)
-- Memory Usage: {profile['memory_usage_mb']:.2f} MB
+# Get API key
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-Risk Assessment:
-- Risk Level: {risk['risk_level']}
-- Risk Score: {risk['risk_score']:.2f}/1.0
-- Missing Value Rate: {risk['components']['missing_value_rate']:.1%}
-- Duplicate Rate: {risk['components']['duplicate_rate']:.1%}
+if not GEMINI_API_KEY:
+    raise Exception("ERROR: GEMINI_API_KEY missing in .env")
 
-Critical Issues:
-{json.dumps([issue for issue in risk['issues'] if issue['severity'] == 'critical'], indent=2)}
+# Configure Gemini
+client = genai.Client(api_key=GEMINI_API_KEY)
 
-Provide a concise analysis of these data quality issues and recommend specific data cleaning strategies. Focus on what columns need attention and why."""
-        
-        message = self.client.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=1024,
-            messages=[
-                {"role": "user", "content": prompt}
-            ]
+def generate_ai_explanation(profile, risk):
+    prompt = f"""
+You are a professional data analyst.
+Analyze the following dataset profile and risk assessment:
+
+=== PROFILE ===
+Rows: {profile['rows']}
+Columns: {profile['columns']}
+Missing Values: {profile['missing']}
+Duplicates: {profile['duplicates']}
+Data Types: {profile['dtypes']}
+Unique Value Count: {profile['unique']}
+
+=== RISK ===
+Risk Score: {risk['risk_score']}
+Risk Level: {risk['risk_level']}
+Issues Found: {risk['issues']}
+
+Provide a clear and simple explanation including:
+- Summary
+- Data issues
+- Impact on ML models
+- Recommended improvements
+"""
+
+    try:
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",
+            contents=[prompt]   # IMPORTANT CHANGE
         )
-        
-        return message.content[0].text
+        return response.text
+
+    except Exception as e:
+        return f"AI Error: {str(e)}"

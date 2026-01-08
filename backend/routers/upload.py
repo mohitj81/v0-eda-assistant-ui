@@ -1,41 +1,27 @@
-from fastapi import APIRouter, File, UploadFile, HTTPException, Query
-from datetime import datetime
-import uuid
-from typing import Dict, Any
+from fastapi import APIRouter, UploadFile, HTTPException
+from services.file_service import save_uploaded_file
+import pandas as pd
 
-router = APIRouter(prefix="/api", tags=["upload"])
+router = APIRouter(prefix="/upload", tags=["Upload"])
 
-# This will be injected from main.py
-file_service = None
-session_data = None
+@router.post("")
+async def upload_dataset(file: UploadFile):
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(status_code=400, detail="Only CSV files allowed")
 
-@router.post("/upload")
-async def upload_dataset(file: UploadFile = File(...)) -> Dict[str, Any]:
-    """Upload a CSV file and return metadata with preview"""
+    # Save file and return unique dataset ID + file path
+    dataset_id, file_path = save_uploaded_file(file)
+
+    # Read first 5 rows for preview
     try:
-        if not file_service.validate_file(file.filename):
-            raise HTTPException(status_code=400, detail="Only CSV files are supported")
-        
-        session_id = str(uuid.uuid4())
-        contents = await file.read()
-        file_path = file_service.save_file(contents, session_id)
-        
-        df = file_service.load_dataframe(file_path)
-        metadata = file_service.get_metadata(file.filename, df, session_id, file_path)
-        
-        session_data[session_id] = {
-            "metadata": metadata,
-            "dataframe": df
-        }
-        
-        return {
-            "success": True,
-            "session_id": session_id,
-            "filename": file.filename,
-            "rows": len(df),
-            "columns": len(df.columns),
-            "column_names": list(df.columns),
-            "preview": metadata["preview"]
-        }
+        df = pd.read_csv(file_path)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Failed to read CSV: {e}")
+
+    preview = df.head().to_dict(orient="records")
+
+    return {
+        "dataset_id": dataset_id,
+        "preview": preview,
+        "message": "File uploaded successfully"
+    }

@@ -1,22 +1,19 @@
-from fastapi import APIRouter, Query, HTTPException
-from typing import Dict, Any
+from fastapi import APIRouter, HTTPException
+from services.profiling_service import generate_profile
+import os
 
-router = APIRouter(prefix="/api", tags=["profiling"])
+router = APIRouter(prefix="/profile", tags=["Profiling"])
 
-profiling_service = None
-session_data = None
+@router.get("/{dataset_id}")
+async def get_profile(dataset_id: str):
+    path = f"backend/storage/uploaded/{dataset_id}.csv"
 
-@router.get("/profile")
-async def get_profiling(session_id: str = Query(...)) -> Dict[str, Any]:
-    """Get data profiling results"""
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Dataset not found")
+
     try:
-        if session_id not in session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        df = session_data[session_id]["dataframe"]
-        profile = profiling_service.profile_dataset(df, session_id)
-        session_data[session_id]["profile"] = profile
-        
-        return profile
+        profile = generate_profile(path)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Profiling failed: {e}")
+
+    return profile

@@ -1,26 +1,11 @@
 from pydantic import BaseModel
-from typing import List, Optional, Dict, Any
-from datetime import datetime
+from typing import Dict, Any
 
-class ColumnAnalysis(BaseModel):
-    name: str
-    dtype: str
-    missing_count: int
-    missing_percentage: float
-    unique_count: int
-    unique_percentage: float
-    mean: Optional[float] = None
-    median: Optional[float] = None
-    std: Optional[float] = None
-    min: Optional[float] = None
-    max: Optional[float] = None
-
-class ProfilingResponse(BaseModel):
-    session_id: str
+class ProfilingModel(BaseModel):
     rows: int
     columns: int
+    missing: Dict[str, int]
     duplicates: int
-    duplicate_percentage: float
-    memory_usage_mb: float
-    columns_analysis: List[ColumnAnalysis]
-    generated_at: str
+    dtypes: Dict[str, str]
+    unique: Dict[str, int]
+    stats: Dict[str, Any]

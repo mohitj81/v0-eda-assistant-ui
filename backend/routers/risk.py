@@ -1,41 +1,21 @@
-from fastapi import APIRouter, Query, HTTPException
-from typing import Dict, Any
+from fastapi import APIRouter, HTTPException
+from services.profiling_service import generate_profile
+from services.risk_service import calculate_risk
+import os
 
-router = APIRouter(prefix="/api", tags=["risk"])
+router = APIRouter(prefix="/risk", tags=["Risk Assessment"])
 
-risk_service = None
-profiling_service = None
-session_data = None
+@router.get("/{dataset_id}")
+async def get_risk(dataset_id: str):
+    path = f"backend/storage/uploaded/{dataset_id}.csv"
 
-@router.get("/risk")
-async def get_risk(session_id: str = Query(...)) -> Dict[str, Any]:
-    """Get data quality risk assessment"""
+    if not os.path.exists(path):
+        raise HTTPException(status_code=404, detail="Dataset not found")
+
     try:
-        if session_id not in session_data:
-            raise HTTPException(status_code=404, detail="Session not found")
-        
-        df = session_data[session_id]["dataframe"]
-        
-        if "profile" not in session_data[session_id]:
-            profile = profiling_service.profile_dataset(df, session_id)
-            session_data[session_id]["profile"] = profile
-        else:
-            profile = session_data[session_id]["profile"]
-        
-        risk_result = risk_service.calculate_risk_score(profile)
-        issues = risk_service.identify_issues(profile)
-        
-        from datetime import datetime
-        risk_assessment = {
-            "session_id": session_id,
-            "risk_score": risk_result["risk_score"],
-            "risk_level": risk_result["risk_level"],
-            "components": risk_result["components"],
-            "issues": issues,
-            "generated_at": datetime.now().isoformat()
-        }
-        
-        session_data[session_id]["risk"] = risk_assessment
-        return risk_assessment
+        profile = generate_profile(path)
+        risk = calculate_risk(profile)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Risk computation failed: {e}")
+
+    return risk
